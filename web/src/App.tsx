@@ -1,5 +1,9 @@
 import React from 'react'
-import { Container, CssBaseline, AppBar, Toolbar, Typography } from '@material-ui/core'
+import {
+  AppBar, Toolbar, Typography
+} from '@material-ui/core'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import HomePage from './pages/Home'
 
 function App () {
   return (
@@ -11,9 +15,13 @@ function App () {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Container maxWidth='xs'>
-        <CssBaseline/>
-      </Container>
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' exact>
+            <HomePage/>
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   )
 }
