@@ -1,13 +1,33 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useLocalStore, useObserver } from 'mobx-react'
-import { Container, CssBaseline, FormControl, InputLabel, MenuItem, Select, Button } from '@material-ui/core'
+import {
+  Container, CssBaseline, FormControl, InputLabel, MenuItem,
+  Select, Button, Snackbar
+} from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert'
 import { Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import NumberInput from '../components/NumberInput'
 
+const formData = [
+  { label: 'White blood cell', error: false },
+  { label: 'Hemoglobin', error: false },
+  { label: 'Platelet', error: false },
+  { label: 'Neutrophil count', error: false },
+  { label: 'Lymphocyte percent', error: false },
+  { label: 'Lymphocyte count', error: false },
+  { label: 'ESR', error: false },
+  { label: 'C-Reaction protein', error: false },
+  { label: 'Blood urea nitrogen (BUN)', error: false },
+  { label: 'Creatinine', error: false },
+  { label: 'Lactate dehydrogenase (LDN)', error: false },
+  { label: 'D-dimer', error: false }
+]
+
 const createStore = () => ({
   form: new Array(12) as number[],
-  type: 0
+  type: 0,
+  data: [...formData]
 })
 
 const formStoreContext = React.createContext <ReturnType<typeof createStore> | null>(null)
@@ -38,39 +58,60 @@ const useStyles = makeStyles(theme => ({
 const HomePageConsumer: React.FC = () => {
   const classes = useStyles()
   const formStore = useFormStore()
+  const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [snackbarMessage, setSnackbarMessage] = useState<string>('')
   const setField = useCallback((index: number, value: number) => {
     formStore.form[index] = value
-  }, [formStore.form])
+    formStore.data[index].error = false
+  }, [formStore.form, formStore.data])
+  const showError = useCallback((errorMessage: string) => {
+    setSnackbarOpen(true)
+    setSnackbarMessage(errorMessage)
+  }, [])
   const enter = useCallback(() => {
-    // todo
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formStore.form, formStore.type])
+    formStore.form.forEach((item, index) => {
+      if (item == null) {
+        !isSnackbarOpen && showError(`'${formData[index].label}' is empty`)
+        formStore.data[index].error = true
+      }
+    })
+  }, [formStore.form, formStore.data, showError, isSnackbarOpen])
   return useObserver(() => (
     <Container maxWidth='md'>
       <CssBaseline/>
       <FormControl className={classes.formControl} style={{ marginTop: '1rem' }}>
         <InputLabel>Type</InputLabel>
-        <Select onChange={(event) => {
-          formStore.type = Number(event.target.value as number)
-        }}>
+        <Select
+          className={classes.inputField}
+          defaultValue={0}
+          onChange={(event) => {
+            formStore.type = Number(event.target.value as number)
+          }}
+        >
           <MenuItem value={0}>Mild vs Viral</MenuItem>
           <MenuItem value={1}>Severe vs Viral</MenuItem>
           <MenuItem value={2}>Mild vs Severe</MenuItem>
         </Select>
-        <NumberInput className={classes.inputField} label='White blood cell' field={0} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Hemoglobin' field={1} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Platelet' field={2} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Neutrophil count' field={3} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Lymphocyte percent' field={4} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Lymphocyte count' field={5} callback={setField}/>
-        <NumberInput className={classes.inputField} label='ESR' field={6} callback={setField}/>
-        <NumberInput className={classes.inputField} label='C-Reaction protein' field={7} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Blood urea nitrogen (BUN)' field={8} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Creatinine' field={9} callback={setField}/>
-        <NumberInput className={classes.inputField} label='Lactate dehydrogenase (LDN)' field={10} callback={setField}/>
-        <NumberInput className={classes.inputField} label='D-dimer' field={11} callback={setField}/>
+        {formStore.data.map((item, index) =>
+          (<NumberInput
+            className={classes.inputField}
+            error={item.error}
+            label={item.label}
+            field={index}
+            key={index}
+            callback={setField}
+          />))
+        }
       </FormControl>
       <Button onClick={enter} variant='contained' color='primary' endIcon={<Send/>}>Enter</Button>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        open={isSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => { setSnackbarOpen(false) }}
+      >
+        <MuiAlert elevation={6} variant='filled' severity='error'>{snackbarMessage}</MuiAlert>
+      </Snackbar>
     </Container>
   ))
 }
