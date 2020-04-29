@@ -26,6 +26,8 @@ jobs:
       - name: Build
         run: yarn --frozen-lockfile --non-interactive && yarn build
         working-directory: ${{ env.working-directory }}
+        env:
+          PUBLIC_URL: "/covid-19/"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
