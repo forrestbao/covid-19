@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const HomePageConsumer: React.FC = () => {
   const classes = useStyles()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const formStore = useFormStore()
   return useObserver(() => (
     <Container maxWidth='xs'>
