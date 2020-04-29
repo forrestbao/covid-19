@@ -29,6 +29,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'camelcase': 'warn',
     'no-unused-vars': 'off',
     'react/prop-types': 'off',
     '@typescript-eslint/no-unused-vars': 'warn'

@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { useLocalStore, useObserver } from 'mobx-react'
 import { Container, CssBaseline, FormControl, InputLabel, MenuItem, Select, Button } from '@material-ui/core'
+import { Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import NumberInput from '../components/NumberInput'
 
@@ -42,6 +43,7 @@ const HomePageConsumer: React.FC = () => {
   }, [formStore.form])
   const enter = useCallback(() => {
     // todo
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStore.form, formStore.type])
   return useObserver(() => (
     <Container maxWidth='md'>
@@ -68,7 +70,7 @@ const HomePageConsumer: React.FC = () => {
         <NumberInput className={classes.inputField} label='Lactate dehydrogenase (LDN)' field={10} callback={setField}/>
         <NumberInput className={classes.inputField} label='D-dimer' field={11} callback={setField}/>
       </FormControl>
-      <Button onClick={enter} variant='contained' color='primary'>Enter</Button>
+      <Button onClick={enter} variant='contained' color='primary' endIcon={<Send/>}>Enter</Button>
     </Container>
   ))
 }
