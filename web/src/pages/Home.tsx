@@ -8,6 +8,8 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import NumberInput from '../components/NumberInput'
+import OutputDialog from './Home/OutputDialog'
+import { getSVMPredict } from '../api'
 
 const formData = [
   { label: 'White blood cell', error: false },
@@ -45,8 +47,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    margin: theme.spacing(1),
-    minWidth: 120
+    margin: theme.spacing(1)
   },
   inputField: {
     marginLeft: theme.spacing(1),
@@ -76,6 +77,16 @@ const HomePageConsumer: React.FC = () => {
       if (item == null) {
         !isSnackbarOpen && showError(`'${formData[index].label}' is empty`)
         formStore.data[index].error = true
+      }
+    })
+    if (formStore.data.some(item => item.error)) {
+      return
+    }
+    getSVMPredict([...formStore.form]).then(res => {
+      if (res === -1) {
+
+      } else if (res === 1) {
+
       }
     })
   }, [formStore.form, formStore.data, showError, isSnackbarOpen])
@@ -115,6 +126,7 @@ const HomePageConsumer: React.FC = () => {
       >
         <MuiAlert elevation={6} variant='filled' severity='error'>{snackbarMessage}</MuiAlert>
       </Snackbar>
+      <OutputDialog open={false}/>
     </Container>
   ))
 }

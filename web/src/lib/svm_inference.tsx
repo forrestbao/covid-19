@@ -12,7 +12,6 @@ export function svm_predict_with_model (
   /* Check svm_covid_19_model_parameters.ts for example */
   serialized_model: string
 ): -1 | 1 {
-  const return_vector = new Array(12) as number[]
   // preprocess input vector
   const preprocessed_vector = scale_input_array(
     array_to_predict,

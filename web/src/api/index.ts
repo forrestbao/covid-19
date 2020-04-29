@@ -2,7 +2,7 @@ import Model from '../lib/svm_model'
 import { svm_predict_with_model } from '../lib/svm_inference'
 
 export const getSVMPredict = (
-  input: [number, number, number, number, number, number, number, number, number, number, number, number]
+  input: number[]
 ): Promise<1 | -1> => {
   return new Promise((resolve) => {
     const res = svm_predict_with_model(
