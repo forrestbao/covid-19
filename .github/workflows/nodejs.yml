@@ -25,11 +25,11 @@ jobs:
       - name: Install Dependencies
         run: cd web && yarn --frozen-lockfile --non-interactive
       - name: Build
-        run: yarn build
+        run: cd web && yarn build
         env:
           CI: true
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.COVID_19 }}
-          publish_dir: ./dist
+          publish_dir: ./web/dist
