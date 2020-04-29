@@ -5,6 +5,8 @@ import {
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import HomePage from './pages/Home'
 
+const fixedURL = (url: string) => `${process.env.PUBLIC_URL}${url}`
+
 function App () {
   return (
     <div>
@@ -17,7 +19,7 @@ function App () {
       </AppBar>
       <BrowserRouter>
         <Switch>
-          <Route path='/' exact>
+          <Route path={fixedURL('/')} exact>
             <HomePage/>
           </Route>
         </Switch>
