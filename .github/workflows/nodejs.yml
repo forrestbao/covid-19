@@ -26,11 +26,9 @@ jobs:
       - name: Build
         run: yarn --frozen-lockfile --non-interactive && yarn build
         working-directory: ${{ env.working-directory }}
-        env:
-          CI: true
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.COVID_19 }}
-          publish_dir: ./web/dist
+          publish_dir: ./web/build
