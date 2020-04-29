@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,12 +23,8 @@ jobs:
           key: ${{ runner.OS }}-npm-cache
           restore-keys: ${{ runner.OS }}-npm-cache
 
-      - name: Install Dependencies
-        run: yarn --frozen-lockfile --non-interactive
-        working-directory: ${{ env.working-directory }}
-
       - name: Build
-        run: yarn build
+        run: yarn --frozen-lockfile --non-interactive && yarn build
         working-directory: ${{ env.working-directory }}
         env:
           CI: true
