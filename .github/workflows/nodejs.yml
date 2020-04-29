@@ -23,7 +23,7 @@ jobs:
           restore-keys: ${{ runner.OS }}-npm-cache
 
       - name: Install Dependencies
-        run: yarn --frozen-lockfile --non-interactive
+        run: cd web && yarn --frozen-lockfile --non-interactive
       - name: Build
         run: yarn build
         env:
