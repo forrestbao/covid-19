@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useLocalStore, useObserver } from 'mobx-react'
-import { Container, CssBaseline, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import { Container, CssBaseline, FormControl, InputLabel, MenuItem, Select, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NumberInput from '../components/NumberInput'
 
@@ -21,8 +21,16 @@ const useFormStore = () => {
 
 const useStyles = makeStyles(theme => ({
   formControl: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     margin: theme.spacing(1),
     minWidth: 120
+  },
+  inputField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: '25ch'
   }
 }))
 
@@ -32,29 +40,35 @@ const HomePageConsumer: React.FC = () => {
   const setField = useCallback((index: number, value: number) => {
     formStore.form[index] = value
   }, [formStore.form])
+  const enter = useCallback(() => {
+    // todo
+  }, [formStore.form, formStore.type])
   return useObserver(() => (
-    <Container maxWidth='xs'>
+    <Container maxWidth='md'>
       <CssBaseline/>
       <FormControl className={classes.formControl} style={{ marginTop: '1rem' }}>
         <InputLabel>Type</InputLabel>
-        <Select>
+        <Select onChange={(event) => {
+          formStore.type = Number(event.target.value as number)
+        }}>
           <MenuItem value={0}>Mild vs Viral</MenuItem>
           <MenuItem value={1}>Severe vs Viral</MenuItem>
           <MenuItem value={2}>Mild vs Severe</MenuItem>
         </Select>
-        <NumberInput label='White blood cell' field={0} onChange={setField}/>
-        <NumberInput label='Hemoglobin' field={1} onChange={setField}/>
-        <NumberInput label='Platelet' field={2} onChange={setField}/>
-        <NumberInput label='Neutrophil count' field={3} onChange={setField}/>
-        <NumberInput label='Lymphocyte percent' field={4} onChange={setField}/>
-        <NumberInput label='Lymphocyte count' field={5} onChange={setField}/>
-        <NumberInput label='ESR' field={6} onChange={setField}/>
-        <NumberInput label='C-Reaction protein' field={7} onChange={setField}/>
-        <NumberInput label='Blood urea nitrogen (BUN)' field={8} onChange={setField}/>
-        <NumberInput label='Creatinine' field={9} onChange={setField}/>
-        <NumberInput label='Lactate dehydrogenase(LDN)' field={10} onChange={setField}/>
-        <NumberInput label='D-dimer' field={11} onChange={setField}/>
+        <NumberInput className={classes.inputField} label='White blood cell' field={0} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Hemoglobin' field={1} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Platelet' field={2} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Neutrophil count' field={3} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Lymphocyte percent' field={4} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Lymphocyte count' field={5} callback={setField}/>
+        <NumberInput className={classes.inputField} label='ESR' field={6} callback={setField}/>
+        <NumberInput className={classes.inputField} label='C-Reaction protein' field={7} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Blood urea nitrogen (BUN)' field={8} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Creatinine' field={9} callback={setField}/>
+        <NumberInput className={classes.inputField} label='Lactate dehydrogenase (LDN)' field={10} callback={setField}/>
+        <NumberInput className={classes.inputField} label='D-dimer' field={11} callback={setField}/>
       </FormControl>
+      <Button onClick={enter} variant='contained' color='primary'>Enter</Button>
     </Container>
   ))
 }
