@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { useLocalStore, useObserver } from 'mobx-react'
 import {
   Container, CssBaseline, FormControl, InputLabel, MenuItem,
-  Select, Button, Snackbar
+  Select, Button, Snackbar, InputAdornment
 } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import { Send } from '@material-ui/icons'
@@ -11,19 +11,30 @@ import NumberInput from '../components/NumberInput'
 import OutputDialog from './Home/OutputDialog'
 import { getSVMPredict } from '../api'
 
-const formData = [
-  { label: 'White blood cell', error: false },
-  { label: 'Hemoglobin', error: false },
-  { label: 'Platelet', error: false },
-  { label: 'Neutrophil count', error: false },
-  { label: 'Lymphocyte percent', error: false },
-  { label: 'Lymphocyte count', error: false },
-  { label: 'ESR', error: false },
-  { label: 'C-Reaction protein', error: false },
-  { label: 'Blood urea nitrogen (BUN)', error: false },
-  { label: 'Creatinine', error: false },
-  { label: 'Lactate dehydrogenase (LDN)', error: false },
-  { label: 'D-dimer', error: false }
+type Feature = {
+  name: string
+  unit: string | string[]
+}
+
+type FeatureInput = Pick<Feature, 'name'> & {
+  error: boolean,
+  unit: string | ([string, (input: number) => number] | [string])[]
+}
+
+const formData: FeatureInput[] = [
+  { name: 'Count of White blood cell (WBC)', error: false, unit: '10<sup>3</sup>/mL' },
+  { name: 'Hemoglobin (HGB)', error: false, unit: 'g/L' },
+  { name: 'Platelet', error: false, unit: '10<sup>3</sup>/mL' },
+  { name: 'Neutrophil percent', error: false, unit: '%' },
+  { name: 'Neutrophil count', error: false, unit: '10<sup>3</sup>/mL' },
+  { name: 'Lymphocyte percent', error: false, unit: '%' },
+  { name: 'Lymphocyte count', error: false, unit: '10<sup>3</sup>/mL' },
+  { name: 'C-reaction protein (CRP)', error: false, unit: 'mg/L' },
+  { name: 'Total bilirubin (TBL)', error: false, unit: [['umol/L', value => (value / 17.1036)], ['mg/dL']] },
+  { name: 'Blood urea nitrogen (BUN)', error: false, unit: [['mmol/L', value => (value / 0.3571)], ['mg/dL']] },
+  { name: 'Creatinine', error: false, unit: [['umol/L', value => (value / 88.417)], ['mg/dL']] },
+  { name: 'Lactate dehydrogenase (LDH)', error: false, unit: 'U/L' },
+  { name: 'D-dimer', error: false, unit: 'mg/L' }
 ]
 
 const createStore = () => ({
@@ -75,7 +86,7 @@ const HomePageConsumer: React.FC = () => {
   const enter = useCallback(() => {
     formStore.form.forEach((item, index) => {
       if (item == null) {
-        !isSnackbarOpen && showError(`'${formData[index].label}' is empty`)
+        !isSnackbarOpen && showError(`'${formData[index].name}' is empty`)
         formStore.data[index].error = true
       }
     })
@@ -106,16 +117,23 @@ const HomePageConsumer: React.FC = () => {
           <MenuItem value={1}>Severe vs Viral</MenuItem>
           <MenuItem value={2}>Mild vs Severe</MenuItem>
         </Select>
-        {formStore.data.map((item, index) =>
-          (<NumberInput
+        {formStore.data.map((item, index) => {
+          return (<NumberInput
             className={classes.inputField}
             error={item.error}
-            label={item.label}
+            label={item.name}
+            endAdornment={
+              <InputAdornment
+                position='end'
+                dangerouslySetInnerHTML={typeof item.unit === 'string' ? { __html: item.unit } : undefined}
+              >
+                {typeof item.unit === 'string' ? null : 'TODO'}
+              </InputAdornment>
+            }
             field={index}
             key={index}
-            callback={setField}
-          />))
-        }
+            callback={setField}/>)
+        })}
       </FormControl>
       <Button onClick={enter} variant='contained' color='primary' endIcon={<Send/>}>Enter</Button>
       <Snackbar

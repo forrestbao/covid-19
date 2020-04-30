@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
-import { TextField, TextFieldProps } from '@material-ui/core'
+import { Input, InputProps, FormControl, InputLabel } from '@material-ui/core'
 
-const NumberInput: React.FC<TextFieldProps & {
+const NumberInput: React.FC<InputProps & {
   label: string
   field: number
   callback: (index: number, value: number) => void
@@ -11,7 +11,10 @@ const NumberInput: React.FC<TextFieldProps & {
       callback(field, Number(target.target.value))
     }, [field, callback])
   return (
-    <TextField onChange={onChange} label={label} type='number' {...props}/>
+    <FormControl>
+      <InputLabel>{label}</InputLabel>
+      <Input onChange={onChange} type='number' {...props}/>
+    </FormControl>
   )
 }
 
