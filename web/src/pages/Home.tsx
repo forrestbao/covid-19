@@ -8,6 +8,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import NumberInput from '../components/NumberInput'
+import UnitDisplay, { Unit } from '../components/UnitDisplay'
 import OutputDialog from './Home/OutputDialog'
 import { getSVMPredict } from '../api'
 
@@ -18,7 +19,7 @@ type Feature = {
 
 type FeatureInput = Pick<Feature, 'name'> & {
   error: boolean,
-  unit: string | ([string, (input: number) => number] | [string])[]
+  unit: Unit
 }
 
 const formData: FeatureInput[] = [
@@ -122,14 +123,7 @@ const HomePageConsumer: React.FC = () => {
             className={classes.inputField}
             error={item.error}
             label={item.name}
-            endAdornment={
-              <InputAdornment
-                position='end'
-                dangerouslySetInnerHTML={typeof item.unit === 'string' ? { __html: item.unit } : undefined}
-              >
-                {typeof item.unit === 'string' ? null : 'TODO'}
-              </InputAdornment>
-            }
+            endAdornment={<InputAdornment position='end'><UnitDisplay unit={item.unit}/></InputAdornment>}
             field={index}
             key={index}
             callback={setField}/>)

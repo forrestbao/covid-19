@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormControl, Select, MenuItem } from '@material-ui/core'
 
-export type Unit = string | ([string, (value: string) => number] | [string])[]
+export type Unit = string | ([string, (value: number) => number] | [string])[]
 
 const UnitDisplay: React.FC<{
   unit: Unit
@@ -12,9 +12,11 @@ const UnitDisplay: React.FC<{
   } else if (Array.isArray(unit)) {
     content = (
       <FormControl>
-        <Select>
+        <Select defaultValue={0}>
           {unit.map((item, index) => (
-            <MenuItem key={item[0]} value={index} dangerouslySetInnerHTML={{ __html: item[0] }}/>
+            <MenuItem key={item[0]} value={index}>
+              {item[0]}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

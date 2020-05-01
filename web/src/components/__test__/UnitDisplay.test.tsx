@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { act } from 'react-dom/test-utils'
-import UnitDisplay from '../Unit'
+import UnitDisplay from '../UnitDisplay'
 
 let container: Element | null
 beforeEach(() => {
