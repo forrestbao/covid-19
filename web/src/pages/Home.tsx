@@ -39,7 +39,7 @@ const formData: FeatureInput[] = [
 ]
 
 const createStore = () => ({
-  form: new Array(12) as number[],
+  form: new Array(13) as number[],
   type: 0,
   data: [...formData]
 })
