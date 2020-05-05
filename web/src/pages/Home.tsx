@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
   inputField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: '25ch',
+    width: '35ch',
     [theme.breakpoints.down('xs')]: {
       width: '100%'
     }
