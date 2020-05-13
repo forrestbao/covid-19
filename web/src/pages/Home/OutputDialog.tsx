@@ -17,7 +17,7 @@ const OutputDialog: React.FC<{
       open={open}
       onClose={onClose}
     >
-      <DialogTitle>Predict Response</DialogTitle>
+      <DialogTitle>Predict result</DialogTitle>
       <DialogContent>
         <DialogContentText>{text}</DialogContentText>
       </DialogContent>
