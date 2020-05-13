@@ -152,7 +152,7 @@ const HomePageConsumer: React.FC = () => {
                 <InputLabel>Gender</InputLabel>
                 <Select
                   className={classes.inputField}
-                  value={formStore.form[index]}
+                  onChange={(target) => setField(index, Number(target.target.value))}
                 >
                   <MenuItem value={1}>Male</MenuItem>
                   <MenuItem value={0}>Female</MenuItem>
