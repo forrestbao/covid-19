@@ -32,9 +32,9 @@ const formData: FeatureInput[] = [
   { type: 'base', name: 'Count of White blood cell (WBC)', error: false, unit: '10<sup>3</sup>/mL' },
   { type: 'base', name: 'Hemoglobin (HGB)', error: false, unit: 'g/L' },
   { type: 'base', name: 'Platelet', error: false, unit: '10<sup>3</sup>/mL' },
-  { type: 'base', name: 'Neutrophil percent', error: false, unit: '%' },
+  { type: 'base', name: 'Neutrophil percentage', error: false, unit: '%' },
   { type: 'base', name: 'Neutrophil count', error: false, unit: '10<sup>3</sup>/mL' },
-  { type: 'base', name: 'Lymphocyte percent', error: false, unit: '%' },
+  { type: 'base', name: 'Lymphocyte percentage', error: false, unit: '%' },
   { type: 'base', name: 'Lymphocyte count', error: false, unit: '10<sup>3</sup>/mL' },
   { type: 'base', name: 'C-reaction protein (CRP)', error: false, unit: 'mg/L' },
   {
@@ -132,8 +132,6 @@ const HomePageConsumer: React.FC = () => {
           }}
         >
           <MenuItem value={0}>Mild vs Viral</MenuItem>
-          <MenuItem value={1}>Severe vs Viral</MenuItem>
-          <MenuItem value={2}>Mild vs Severe</MenuItem>
         </Select>
         {formStore.data.map((item, index) => {
           if (item.type === 'base') {

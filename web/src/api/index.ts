@@ -6,14 +6,15 @@ export const getSVMPredict = (
 ): Promise<1 | -1> => {
   return new Promise((resolve) => {
     const res = svm_predict_with_model(
-      // this is user's input, an array of 12 numbers
+      // this is user's input, an array of N numbers
       [...input],
-      // this is an array of minimum values of each dimension from svm-scale
-      Model.feature_min_Model_Severe_Vs_Mild,
-      // this is an array of maximux values of each dimension from svm-scale
-      Model.feature_max_Model_Severe_Vs_Mild,
+
+
       // this is the raw string of pretrained model file
-      Model.str_Model_Severe_Vs_Mild
+      Model.str_Model_Mild_Vs_Viral,
+
+      // this is the scaling parameters N * 2
+      Model.feature_scaling_string
     )
     resolve(res)
   })
