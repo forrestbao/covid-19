@@ -137,20 +137,29 @@ const HomePageConsumer: React.FC = () => {
         </Select>
         {formStore.data.map((item, index) => {
           if (item.type === 'base') {
-            return (<NumberInput
-              className={classes.inputField}
-              error={item.error}
-              label={item.name}
-              endAdornment={<InputAdornment position='end'><UnitDisplay unit={item.unit}/></InputAdornment>}
-              field={index}
-              key={index}
-              callback={setField}/>)
+            return (
+              <NumberInput
+                className={classes.inputField}
+                error={item.error}
+                label={item.name}
+                endAdornment={<InputAdornment position='end'><UnitDisplay unit={item.unit}/></InputAdornment>}
+                field={index}
+                key={index}
+                callback={setField}
+              />
+            )
           } else if (item.type === 'gender') {
             return (
-              <Select value={formStore.form[index]}>
-                <MenuItem value={1}>Male</MenuItem>
-                <MenuItem value={0}>Female</MenuItem>
-              </Select>
+              <FormControl>
+                <InputLabel>Gender</InputLabel>
+                <Select
+                  className={classes.inputField}
+                  value={formStore.form[index]}
+                >
+                  <MenuItem value={1}>Male</MenuItem>
+                  <MenuItem value={0}>Female</MenuItem>
+                </Select>
+              </FormControl>
             )
           }
         })}
