@@ -175,7 +175,7 @@ const HomePageConsumer: React.FC = () => {
           }
         })}
       </FormControl>
-      <Button onClick={enter} variant='contained' color='primary' endIcon={<Send/>}>Enter</Button>
+      <Button onClick={enter} variant='contained' color='primary' endIcon={<Send/>}>predict</Button>
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         open={isSnackbarOpen}
