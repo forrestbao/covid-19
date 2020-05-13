@@ -9,7 +9,6 @@ export const getSVMPredict = (
       // this is user's input, an array of N numbers
       [...input],
 
-
       // this is the raw string of pretrained model file
       Model.str_Model_Mild_Vs_Viral,
 

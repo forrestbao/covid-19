@@ -92,6 +92,16 @@ const useStyles = makeStyles(theme => ({
 const HomePageConsumer: React.FC = () => {
   const classes = useStyles()
   const formStore = useFormStore()
+  const homeStore = useLocalStore(() => ({
+    openDialog: false,
+    dialogData: {
+      text: ''
+    },
+    showMessage: (text: string) => {
+      homeStore.openDialog = true
+      homeStore.dialogData.text = text
+    }
+  }))
   const [isSnackbarOpen, setSnackbarOpen] = useState<boolean>(false)
   const [snackbarMessage, setSnackbarMessage] = useState<string>('')
   const setField = useCallback((index: number, value: number) => {
@@ -113,11 +123,10 @@ const HomePageConsumer: React.FC = () => {
       return
     }
     getSVMPredict([...formStore.form]).then(res => {
-      // todo
       if (res === -1) {
-        console.log('COVID-19 likely')
-      } else if (res === 1) {
-        console.log('non-COVID-19 likely')
+        homeStore.showMessage('COVID-19 likely')
+      } else {
+        homeStore.showMessage('non-COVID-19 likely')
       }
     })
   }, [formStore.form, formStore.data, showError, isSnackbarOpen])
@@ -173,7 +182,7 @@ const HomePageConsumer: React.FC = () => {
       >
         <MuiAlert elevation={6} variant='filled' severity='error'>{snackbarMessage}</MuiAlert>
       </Snackbar>
-      <OutputDialog open={false}/>
+      <OutputDialog open={homeStore.openDialog} text={homeStore.dialogData.text}/>
     </Container>
   ))
 }

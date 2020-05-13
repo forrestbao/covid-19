@@ -5,8 +5,9 @@ import {
 } from '@material-ui/core'
 
 const OutputDialog: React.FC<{
-  open: boolean
-}> = ({ open, children }) => {
+  open: boolean,
+  text: string
+}> = ({ open, text }) => {
   const theme = useTheme()
   const fullscreen = useMediaQuery(theme.breakpoints.down('sm'))
   return (
@@ -16,7 +17,7 @@ const OutputDialog: React.FC<{
     >
       <DialogTitle>Predict Response</DialogTitle>
       <DialogContent>
-        <DialogContentText>{children}</DialogContentText>
+        <DialogContentText>{text}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button autoFocus color="primary">
