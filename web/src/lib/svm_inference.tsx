@@ -1,14 +1,10 @@
 // @ts-ignore
 import * as svm from 'libsvm-js/asm'
 
-
-
 enum Feature{
   max,
   min
 };
-
-
 
 export function svm_predict_with_model (
   /* the input array of numbers (length of N) for inference */
@@ -20,17 +16,14 @@ export function svm_predict_with_model (
 
   feature_min_max: string
 ): -1 | 1 {
-  const return_vector = new Array(15) as number[]
   // preprocess input vector
 
+  console.log(feature_min_max)
+  const feature_min_array = parse_feature_scaling_string(feature_min_max, Feature.min)
+  const feature_max_array = parse_feature_scaling_string(feature_min_max, Feature.max)
 
-  console.log(feature_min_max);
-  const feature_min_array = parse_feature_scaling_string(feature_min_max, Feature.min);
-  const feature_max_array = parse_feature_scaling_string(feature_min_max, Feature.max);
-
-
-  //show in console
-  console.log("Feature max and min: "); console.log(feature_max_array); console.log(feature_min_array);
+  // show in console
+  console.log('Feature max and min: '); console.log(feature_max_array); console.log(feature_min_array)
 
   const preprocessed_vector = scale_input_array(
     array_to_predict,
@@ -68,51 +61,45 @@ function scale_input_array (array_to_predict: number[], feature_min_array: numbe
   return return_vector
 }
 
-
-
-function isEmptyOrSpaces(str:string):boolean{
-  return str === null || str.match(/^ *$/) !== null;
+function isEmptyOrSpaces (str:string):boolean {
+  return str === null || str.match(/^ *$/) !== null
 }
 
-
 /* This function is to parse the feature max/min string into array of numbers */
-function parse_feature_scaling_string(input_string:string, option:Feature) : number[]{
-  let return_array: number[] = [];
+function parse_feature_scaling_string (input_string:string, option:Feature) : number[] {
+  const return_array: number[] = []
 
-  //1. Split input_string into array of string by new line '\n' and/or '\r\n'
-  let splitted_result = input_string.split(/\r?\n/);
+  // 1. Split input_string into array of string by new line '\n' and/or '\r\n'
+  const splitted_result = input_string.split(/\r?\n/)
 
-  console.log("feature max min array splitted result: ")
-  console.log(splitted_result);
-  //2. split each line by space, then add max or min value of current feature into return_array
-  for (let each_line of splitted_result){
-    console.log(each_line);
-    let splitted_each_line = each_line.split(' ');
+  console.log('feature max min array splitted result: ')
+  console.log(splitted_result)
+  // 2. split each line by space, then add max or min value of current feature into return_array
+  for (const each_line of splitted_result) {
+    console.log(each_line)
+    const splitted_each_line = each_line.split(' ')
 
+    const each_line_numbers = []
 
-    let each_line_numbers = [];
-
-    for (let each_string of splitted_each_line){
-      if (each_string.length != 0){
+    for (const each_string of splitted_each_line) {
+      if (each_string.length !== 0) {
         each_line_numbers.push(each_string)
       }
     }
 
-    console.log("each line: ")
+    console.log('each line: ')
     console.log(each_line_numbers)
 
-    if (each_line_numbers.length != 3 || isEmptyOrSpaces(each_line)) continue;
+    if (each_line_numbers.length !== 3 || isEmptyOrSpaces(each_line)) continue
     if (option === Feature.max) {
-      return_array.push(parseFloat(each_line_numbers[2]));
-    }
-    else{
-      return_array.push(parseFloat(each_line_numbers[1]));
+      return_array.push(parseFloat(each_line_numbers[2]))
+    } else {
+      return_array.push(parseFloat(each_line_numbers[1]))
     }
   }
 
-  console.log("parsing result")
+  console.log('parsing result')
   console.log(return_array)
 
-  return return_array;
-
+  return return_array
 }

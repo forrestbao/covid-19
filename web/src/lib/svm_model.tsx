@@ -159,9 +159,7 @@ export default class SVM_COVID_19_Model_Parameters {
   
   `
 
-
-
-  static feature_scaling_string = 
+  static feature_scaling_string =
   `
   1 2.23 17.850000000000001
   2 17 170
@@ -179,7 +177,4 @@ export default class SVM_COVID_19_Model_Parameters {
   14 20 87
   15 0 1
   `;
-
-
-
 }

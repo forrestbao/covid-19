@@ -129,7 +129,7 @@ const HomePageConsumer: React.FC = () => {
         homeStore.showMessage('non-COVID-19 likely')
       }
     })
-  }, [formStore.form, formStore.data, showError, isSnackbarOpen])
+  }, [formStore.form, formStore.data, showError, isSnackbarOpen, homeStore])
   return useObserver(() => (
     <Container maxWidth='md'>
       <CssBaseline/>
@@ -170,6 +170,8 @@ const HomePageConsumer: React.FC = () => {
                 </Select>
               </FormControl>
             )
+          } else {
+            return null
           }
         })}
       </FormControl>
