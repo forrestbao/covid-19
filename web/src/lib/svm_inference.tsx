@@ -82,19 +82,36 @@ function parse_feature_scaling_string(input_string:string, option:Feature) : num
   //1. Split input_string into array of string by new line '\n' and/or '\r\n'
   let splitted_result = input_string.split(/\r?\n/);
 
+  console.log("feature max min array splitted result: ")
   console.log(splitted_result);
   //2. split each line by space, then add max or min value of current feature into return_array
   for (let each_line of splitted_result){
     console.log(each_line);
     let splitted_each_line = each_line.split(' ');
-    if (splitted_each_line.length != 3 || isEmptyOrSpaces(each_line)) continue;
-    if (option == Feature.max) {
-      return_array.push(parseFloat(splitted_each_line[2]));
+
+
+    let each_line_numbers = [];
+
+    for (let each_string of splitted_each_line){
+      if (each_string.length != 0){
+        each_line_numbers.push(each_string)
+      }
+    }
+
+    console.log("each line: ")
+    console.log(each_line_numbers)
+
+    if (each_line_numbers.length != 3 || isEmptyOrSpaces(each_line)) continue;
+    if (option === Feature.max) {
+      return_array.push(parseFloat(each_line_numbers[2]));
     }
     else{
-      return_array.push(parseFloat(splitted_each_line[1]));
+      return_array.push(parseFloat(each_line_numbers[1]));
     }
   }
+
+  console.log("parsing result")
+  console.log(return_array)
 
   return return_array;
 
