@@ -12,34 +12,51 @@ import UnitDisplay, { Unit } from '../components/UnitDisplay'
 import OutputDialog from './Home/OutputDialog'
 import { getSVMPredict } from '../api'
 
-type Feature = {
+type FeatureBase = {
   name: string
-  unit: string | string[]
 }
 
-type FeatureInput = Pick<Feature, 'name'> & {
-  error: boolean,
-  unit: Unit
+interface Feature extends FeatureBase {
+  type: 'base'
+}
+
+interface Gender extends FeatureBase {
+  type: 'gender'
+}
+
+type FeatureInput = ((Feature & { unit: Unit }) | Gender) & {
+  error: boolean
 }
 
 const formData: FeatureInput[] = [
-  { name: 'Count of White blood cell (WBC)', error: false, unit: '10<sup>3</sup>/mL' },
-  { name: 'Hemoglobin (HGB)', error: false, unit: 'g/L' },
-  { name: 'Platelet', error: false, unit: '10<sup>3</sup>/mL' },
-  { name: 'Neutrophil percent', error: false, unit: '%' },
-  { name: 'Neutrophil count', error: false, unit: '10<sup>3</sup>/mL' },
-  { name: 'Lymphocyte percent', error: false, unit: '%' },
-  { name: 'Lymphocyte count', error: false, unit: '10<sup>3</sup>/mL' },
-  { name: 'C-reaction protein (CRP)', error: false, unit: 'mg/L' },
-  { name: 'Total bilirubin (TBL)', error: false, unit: [['umol/L', value => (value / 17.1036)], ['mg/dL']] },
-  { name: 'Blood urea nitrogen (BUN)', error: false, unit: [['mmol/L', value => (value / 0.3571)], ['mg/dL']] },
-  { name: 'Creatinine', error: false, unit: [['umol/L', value => (value / 88.417)], ['mg/dL']] },
-  { name: 'Lactate dehydrogenase (LDH)', error: false, unit: 'U/L' },
-  { name: 'D-dimer', error: false, unit: 'mg/L' }
+  { type: 'base', name: 'Count of White blood cell (WBC)', error: false, unit: '10<sup>3</sup>/mL' },
+  { type: 'base', name: 'Hemoglobin (HGB)', error: false, unit: 'g/L' },
+  { type: 'base', name: 'Platelet', error: false, unit: '10<sup>3</sup>/mL' },
+  { type: 'base', name: 'Neutrophil percent', error: false, unit: '%' },
+  { type: 'base', name: 'Neutrophil count', error: false, unit: '10<sup>3</sup>/mL' },
+  { type: 'base', name: 'Lymphocyte percent', error: false, unit: '%' },
+  { type: 'base', name: 'Lymphocyte count', error: false, unit: '10<sup>3</sup>/mL' },
+  { type: 'base', name: 'C-reaction protein (CRP)', error: false, unit: 'mg/L' },
+  {
+    type: 'base',
+    name: 'Total bilirubin (TBL)',
+    error: false,
+    unit: [['umol/L', value => (value / 17.1036)], ['mg/dL']]
+  },
+  {
+    type: 'base',
+    name: 'Blood urea nitrogen (BUN)',
+    error: false,
+    unit: [['mmol/L', value => (value / 0.3571)], ['mg/dL']]
+  },
+  { type: 'base', name: 'Creatinine', error: false, unit: [['umol/L', value => (value / 88.417)], ['mg/dL']] },
+  { type: 'base', name: 'Lactate dehydrogenase (LDH)', error: false, unit: 'U/L' },
+  { type: 'base', name: 'D-dimer', error: false, unit: 'mg/L' },
+  { type: 'gender', name: 'Gender', error: false }
 ]
 
 const createStore = () => ({
-  form: new Array(13) as number[],
+  form: new Array(14) as number[],
   type: 0,
   data: [...formData]
 })
@@ -119,14 +136,23 @@ const HomePageConsumer: React.FC = () => {
           <MenuItem value={2}>Mild vs Severe</MenuItem>
         </Select>
         {formStore.data.map((item, index) => {
-          return (<NumberInput
-            className={classes.inputField}
-            error={item.error}
-            label={item.name}
-            endAdornment={<InputAdornment position='end'><UnitDisplay unit={item.unit}/></InputAdornment>}
-            field={index}
-            key={index}
-            callback={setField}/>)
+          if (item.type === 'base') {
+            return (<NumberInput
+              className={classes.inputField}
+              error={item.error}
+              label={item.name}
+              endAdornment={<InputAdornment position='end'><UnitDisplay unit={item.unit}/></InputAdornment>}
+              field={index}
+              key={index}
+              callback={setField}/>)
+          } else if (item.type === 'gender') {
+            return (
+              <Select value={formStore.form[index]}>
+                <MenuItem value={1}>Male</MenuItem>
+                <MenuItem value={0}>Female</MenuItem>
+              </Select>
+            )
+          }
         })}
       </FormControl>
       <Button onClick={enter} variant='contained' color='primary' endIcon={<Send/>}>Enter</Button>
