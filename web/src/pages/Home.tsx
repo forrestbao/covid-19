@@ -52,11 +52,12 @@ const formData: FeatureInput[] = [
   { type: 'base', name: 'Creatinine', error: false, unit: [['umol/L', value => (value / 88.417)], ['mg/dL']] },
   { type: 'base', name: 'Lactate dehydrogenase (LDH)', error: false, unit: 'U/L' },
   { type: 'base', name: 'D-dimer', error: false, unit: 'mg/L' },
+  { type: 'base', name: 'Age', error: false, unit: '' },
   { type: 'gender', name: 'Gender', error: false }
 ]
 
 const createStore = () => ({
-  form: new Array(14) as number[],
+  form: new Array(15) as number[],
   type: 0,
   data: [...formData]
 })
@@ -112,10 +113,11 @@ const HomePageConsumer: React.FC = () => {
       return
     }
     getSVMPredict([...formStore.form]).then(res => {
+      // todo
       if (res === -1) {
-
+        console.log('COVID-19 likely')
       } else if (res === 1) {
-
+        console.log('non-COVID-19 likely')
       }
     })
   }, [formStore.form, formStore.data, showError, isSnackbarOpen])
