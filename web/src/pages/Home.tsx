@@ -182,7 +182,11 @@ const HomePageConsumer: React.FC = () => {
       >
         <MuiAlert elevation={6} variant='filled' severity='error'>{snackbarMessage}</MuiAlert>
       </Snackbar>
-      <OutputDialog open={homeStore.openDialog} text={homeStore.dialogData.text}/>
+      <OutputDialog
+        open={homeStore.openDialog}
+        text={homeStore.dialogData.text}
+        onClose={() => { homeStore.openDialog = false }}
+      />
     </Container>
   ))
 }
