@@ -13,22 +13,6 @@ import OutputDialog from './Home/OutputDialog'
 import { getSVMPredict } from '../api'
 import { formData } from '../data'
 
-const createStore = () => ({
-  form: new Array(15) as number[],
-  type: 0,
-  data: [...formData]
-})
-
-const formStoreContext = React.createContext <ReturnType<typeof createStore> | null>(null)
-
-const useFormStore = () => {
-  const store = React.useContext(formStoreContext)
-  if (!store) {
-    throw new Error('useFormStore must be used within a StoreProvider')
-  }
-  return store
-}
-
 const useStyles = makeStyles(theme => ({
   formControl: {
     display: 'flex',
@@ -46,9 +30,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const HomePageConsumer: React.FC = () => {
+const HomePage: React.FC = () => {
   const classes = useStyles()
-  const formStore = useFormStore()
+  const formStore = useLocalStore(() => ({
+    form: new Array(15) as number[],
+    type: 0,
+    data: [...formData]
+  }))
   const homeStore = useLocalStore(() => ({
     openDialog: false,
     dialogData: {
@@ -148,15 +136,6 @@ const HomePageConsumer: React.FC = () => {
       />
     </Container>
   ))
-}
-
-const HomePage: React.FC = () => {
-  const formStore = useLocalStore(createStore)
-  return (
-    <formStoreContext.Provider value={formStore}>
-      <HomePageConsumer/>
-    </formStoreContext.Provider>
-  )
 }
 
 export default HomePage
