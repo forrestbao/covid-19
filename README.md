@@ -21,3 +21,6 @@ svm-predict test.scaled mild_vs_viral.model test.prediction_output
 ```
 
 The scaler file is loaded via the `-r` option when scaling data in `svm-scale`. The model file is loaded as a mandatory argument when making predictions in `svm-predict`. 
+
+## Help
+If you have any questions, please contact Forrest Bao at forrest dot bao @ gmail dot com, or create an issue ticket. 
